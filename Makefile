@@ -6,7 +6,7 @@
 #    By: rrouille <rrouille@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/02/14 15:20:40 by rrouille          #+#    #+#              #
-#    Updated: 2023/03/06 11:25:15 by rrouille         ###   ########.fr        #
+#    Updated: 2023/03/06 11:35:01 by rrouille         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -99,7 +99,10 @@ ${OBJDIR}/%.o : ${SRCDIR}/%.c lib
 			@$(CC) -I ${HDRDIR} -c $< -o $@
 
 lib :
-			@if [ -d mylib ]; then \
+			@if [ -d mylib ]; then
+				cd mylib/; \
+				git pull --quiet; \
+				cd ../; \
 				echo "${GREEN}Program already exists, updating it.${RESET}"; \
 			else \
 				git clone https://github.com/rphlr/mylib --quiet; \
@@ -108,7 +111,7 @@ lib :
 			@${MKDIR} -p ${OBJDIR}
 			@${START}
 
-$(NAME): $(OBJS)
+$(NAME): lib $(OBJS)
 			@for i in $(OBJS) mylib/objs/*/*.o; do \
 			${CHARG_LINE}; \
 			done; \
